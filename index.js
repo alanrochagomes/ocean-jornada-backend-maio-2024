@@ -1,26 +1,26 @@
-const express = require('express')
-const app = express()
+    const express = require('express')
+    const app = express()
 
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
+    app.get('/', function (req, res) {
+    res.send('Hello World')
+    })
 
-app.get('/oi', function (req, res) {
+    app.get('/oi', function (req, res) {
     res.send('Olá, Mundo!')
-})
+    })
 
 
-// Lista de Itens
-const itens = ['Rick Sanchez', 'Morty Smith', 'Summer Smith']
-//              0               1              2
+    // Lista de Itens
+    const itens = ['Rick Sanchez', 'Morty Smith', 'Summer Smith']
+    //              0               1              2
 
-// Endpoint de Read All [GET] /item
-app.get('/item', function (req, res) {
+    // Endpoint de Read All [GET] /item
+    app.get('/item', function (req, res) {
     res.send(itens)
-})
+    })
 
-// Endpoint de Read By Id [GET] /item/:id
-app.get('/item/:id', function (req, res) {
+    // Endpoint de Read By Id [GET] /item/:id
+    app.get('/item/:id', function (req, res) {
     // Acessamos o parâmetro de rota ID
     const id = req.params.id
 
@@ -29,7 +29,7 @@ app.get('/item/:id', function (req, res) {
 
     // Enviamos o item encontrado como resposta
     res.send(item)
-})
+    })
 
     // Sinalizamos que todo corpo de requisição
     // virá como JSON
@@ -48,15 +48,15 @@ app.get('/item/:id', function (req, res) {
 
     // Enviar uma mensagem de sucesso
     res.send('Item adicionando com sucesso: ' + novoItem)
-})
+    })
 
-// Endpoint de Update [PUT] /item/:id
-app.put('/item/:id', function (req, res) {
+    // Endpoint de Update [PUT] /item/:id
+    app.put('/item/:id', function (req, res) {
     // Acessar o ID do parâmetro de rota
     const id = req.params.id
 
-// Acessar o item a ser atualizado, a partir do
-// corpo de requisição
+    // Acessar o item a ser atualizado, a partir do
+    // corpo de requisição
     const body = req.body
     const atualizarItem = body.nome
 
@@ -65,6 +65,18 @@ app.put('/item/:id', function (req, res) {
 
     // Enviamos uma mensagem de sucesso
     res.send('Item atualizado com sucesso: ' + id + ', ' + atualizarItem)
-})
+    })
 
-app.listen(3000)
+    // Endpoint de Delete [DELETE] /item/:id
+    app.delete('/item/:id', function (req, res) {
+        // Acessar o parâmetro de rota ID
+        const id = req.params.id
+
+        // Executa a operação de exclusão desse item pelo índice
+        delete itens[id - 1]
+
+        // Enviamos uma mensagem de sucesso
+        res.send('Item removido com sucesso: ' + id)
+    })
+
+    app.listen(3000)
