@@ -16,7 +16,7 @@
 
     // Endpoint de Read All [GET] /item
     app.get('/item', function (req, res) {
-    res.send(itens)
+    res.send(itens.filter(Boolean))
     })
 
     // Endpoint de Read By Id [GET] /item/:id
