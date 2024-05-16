@@ -1,82 +1,96 @@
-    const express = require('express')
-    const app = express()
+const express = require("express");
+const { MongoClient } = require("mongodb");
 
-    app.get('/', function (req, res) {
-    res.send('Hello World')
-    })
+const dbUrl = "mongodb+srv://admin:3au0j1F9GoaFWMMI@cluster0.hwppulk.mongodb.net";
+const dbName = "ocean-jornada-backend-maio-2024";
 
-    app.get('/oi', function (req, res) {
-    res.send('Olá, Mundo!')
-    })
+const client = new MongoClient(dbUrl);
 
+async function main() {
+  console.log("Conectando ao Banco de Dados...");
+  await client.connect();
+  console.log("Banco de dados conectado com sucesso!");
 
-    // Lista de Itens
-    const itens = ['Rick Sanchez', 'Morty Smith', 'Summer Smith']
-    //              0               1              2
+  const app = express();
 
-    // Endpoint de Read All [GET] /item
-    app.get('/item', function (req, res) {
-    res.send(itens.filter(Boolean))
-    })
+  app.get("/", function (req, res) {
+    res.send("Hello World");
+  });
 
-    // Endpoint de Read By Id [GET] /item/:id
-    app.get('/item/:id', function (req, res) {
+  app.get("/oi", function (req, res) {
+    res.send("Olá, Mundo!");
+  });
+
+  // Lista de Itens
+  const itens = ["Rick Sanchez", "Morty Smith", "Summer Smith"];
+  //              0               1              2
+
+  // Endpoint de Read All [GET] /item
+  app.get("/item", function (req, res) {
+    res.send(itens.filter(Boolean));
+  });
+
+  // Endpoint de Read By Id [GET] /item/:id
+  app.get("/item/:id", function (req, res) {
     // Acessamos o parâmetro de rota ID
-    const id = req.params.id
+    const id = req.params.id;
 
     // Acessamos o item na lista usando o ID - 1
-    const item = itens[id - 1]
+    const item = itens[id - 1];
 
     // Enviamos o item encontrado como resposta
-    res.send(item)
-    })
+    res.send(item);
+  });
 
-    // Sinalizamos que todo corpo de requisição
-    // virá como JSON
-    app.use(express.json())
+  // Sinalizamos que todo corpo de requisição
+  // virá como JSON
+  app.use(express.json());
 
-    // Endpoint de Create [POST] /item
-    app.post('/item', function (req, res) {
+  // Endpoint de Create [POST] /item
+  app.post("/item", function (req, res) {
     // Acessamos o corpo da requisição
-    const body = req.body
+    const body = req.body;
 
     // Acessar o item no corpo da requisição
-    const novoItem = body.nome
+    const novoItem = body.nome;
 
     // Adicionar o novo item na lista
-    itens.push(novoItem)
+    itens.push(novoItem);
 
     // Enviar uma mensagem de sucesso
-    res.send('Item adicionando com sucesso: ' + novoItem)
-    })
+    res.send("Item adicionando com sucesso: " + novoItem);
+  });
 
-    // Endpoint de Update [PUT] /item/:id
-    app.put('/item/:id', function (req, res) {
+  // Endpoint de Update [PUT] /item/:id
+  app.put("/item/:id", function (req, res) {
     // Acessar o ID do parâmetro de rota
-    const id = req.params.id
+    const id = req.params.id;
 
     // Acessar o item a ser atualizado, a partir do
     // corpo de requisição
-    const body = req.body
-    const atualizarItem = body.nome
+    const body = req.body;
+    const atualizarItem = body.nome;
 
     // Atualizar na lista o item recebido
-    itens[id - 1] = atualizarItem
+    itens[id - 1] = atualizarItem;
 
     // Enviamos uma mensagem de sucesso
-    res.send('Item atualizado com sucesso: ' + id + ', ' + atualizarItem)
-    })
+    res.send("Item atualizado com sucesso: " + id + ", " + atualizarItem);
+  });
 
-    // Endpoint de Delete [DELETE] /item/:id
-    app.delete('/item/:id', function (req, res) {
-        // Acessar o parâmetro de rota ID
-        const id = req.params.id
+  // Endpoint de Delete [DELETE] /item/:id
+  app.delete("/item/:id", function (req, res) {
+    // Acessar o parâmetro de rota ID
+    const id = req.params.id;
 
-        // Executa a operação de exclusão desse item pelo índice
-        delete itens[id - 1]
+    // Executa a operação de exclusão desse item pelo índice
+    delete itens[id - 1];
 
-        // Enviamos uma mensagem de sucesso
-        res.send('Item removido com sucesso: ' + id)
-    })
+    // Enviamos uma mensagem de sucesso
+    res.send("Item removido com sucesso: " + id);
+  });
 
-    app.listen(3000)
+  app.listen(3000);
+}
+
+main();
